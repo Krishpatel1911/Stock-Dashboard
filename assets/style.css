@@ -1,0 +1,275 @@
+/* ══════════════════════════════════════════════════════════════
+   STOCKIQ — TERMINAL REDESIGN
+   Palette:  ink #0A0E14 / panel #10161F / elevated #161D28
+             amber #E8A33D (signal)  cyan #4FB8C4 (secondary)
+             mint  #4FD1A5 (up)      coral #FF6B6B (down)
+   Type:     Space Grotesk (display) / Inter (ui) / JetBrains Mono (data)
+   ══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+    --ink:        #0A0E14;
+    --panel:      #10161F;
+    --elevated:   #161D28;
+    --border:     #232B38;
+    --border-lit: #3A4457;
+    --amber:      #E8A33D;
+    --amber-dim:  #7A5A26;
+    --cyan:       #4FB8C4;
+    --mint:       #4FD1A5;
+    --coral:      #FF6B6B;
+    --text-hi:    #E9EDF4;
+    --text-mid:   #8B96A8;
+    --text-low:   #4E5867;
+}
+
+/* ─── App shell ────────────────────────────────────────────── */
+.stApp {
+    background: var(--ink) !important;
+    color: var(--text-hi);
+    font-family: 'Inter', sans-serif;
+}
+[data-testid="stHeader"] { background: transparent; }
+.block-container { padding-top: 1rem !important; max-width: 1400px; }
+::selection { background: var(--amber); color: var(--ink); }
+
+/* Kill Streamlit's default rounded-card look everywhere, we set our own */
+* { border-radius: 2px !important; }
+
+/* ─── Scrolling ticker marquee (signature element) ────────── */
+.tape-wrap {
+    overflow: hidden;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    margin-bottom: 1.1rem;
+    white-space: nowrap;
+}
+.tape-track {
+    display: inline-block;
+    padding: 7px 0;
+    animation: scroll-tape 22s linear infinite;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--text-mid);
+}
+.tape-track span { margin: 0 22px; }
+.tape-track .up   { color: var(--mint); }
+.tape-track .down { color: var(--coral); }
+@keyframes scroll-tape {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .tape-track { animation: none; }
+}
+
+/* ─── Sidebar / control rail ──────────────────────────────── */
+[data-testid="stSidebar"] {
+    background: var(--panel) !important;
+    border-right: 1px solid var(--border);
+}
+[data-testid="stSidebar"] > div { padding-top: 1.2rem; }
+
+.rail-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    color: var(--text-hi);
+    letter-spacing: -0.01em;
+}
+.rail-logo::before {
+    content: "● ";
+    color: var(--amber);
+    font-size: 0.7rem;
+}
+.rail-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text-low);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+.rail-section {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 1.1rem 0 0.4rem 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+}
+
+[data-testid="stSidebar"] hr { border-color: var(--border) !important; }
+
+/* Streamlit widget re-skin */
+[data-testid="stSidebar"] label, [data-testid="stSidebar"] p { color: var(--text-mid) !important; }
+.stSelectbox [data-baseweb="select"] > div {
+    background: var(--elevated) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-hi) !important;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+}
+.stRadio [role="radiogroup"] label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--text-mid);
+}
+.stToggle label p { font-size: 12.5px !important; color: var(--text-mid) !important; }
+[data-testid="stWidgetLabel"] p { color: var(--text-mid) !important; }
+
+button[kind="secondary"], .stButton button {
+    background: var(--elevated) !important;
+    border: 1px solid var(--amber-dim) !important;
+    color: var(--amber) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 12px !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.stButton button:hover {
+    border-color: var(--amber) !important;
+    background: rgba(232,163,61,0.08) !important;
+}
+
+/* ─── Header readout ───────────────────────────────────────── */
+.header-block {
+    background: linear-gradient(180deg, var(--panel) 0%, var(--ink) 100%);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--amber);
+    padding: 22px 28px 18px 28px;
+    margin-bottom: 14px;
+    position: relative;
+}
+.header-block::after {
+    content: "LIVE" ;
+    position: absolute;
+    top: 18px; right: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--mint);
+    border: 1px solid var(--mint);
+    padding: 2px 7px;
+    opacity: 0.85;
+}
+.ticker-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    letter-spacing: 0.01em;
+}
+.ticker-symbol {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-low);
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+}
+.price-row { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.price {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 2.6rem;
+    color: var(--text-hi);
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 22px rgba(232,163,61,0.18);
+}
+.change {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.05rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border: 1px solid transparent;
+}
+.change.positive { color: var(--mint); border-color: rgba(79,209,165,0.35); background: rgba(79,209,165,0.06); }
+.change.negative { color: var(--coral); border-color: rgba(255,107,107,0.35); background: rgba(255,107,107,0.06); }
+
+/* ─── Metric strip (exchange board, not cards) ───────────────*/
+.board-strip {
+    display: flex;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    margin-bottom: 18px;
+    overflow-x: auto;
+}
+.metric-card {
+    flex: 1;
+    min-width: 130px;
+    padding: 12px 18px;
+    border-right: 1px solid var(--border);
+}
+.metric-card:last-child { border-right: none; }
+.metric-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-low);
+    margin-bottom: 5px;
+}
+.metric-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-hi);
+}
+.metric-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    margin-top: 3px;
+    letter-spacing: 0.06em;
+}
+
+/* ─── Chart panels — HUD corner-bracket frame ────────────────*/
+[data-testid="stPlotlyChart"] {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 6px;
+    position: relative;
+}
+
+/* ─── Tabs re-skin as terminal tabs ──────────────────────────*/
+.stTabs [data-baseweb="tab-list"] {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    gap: 0;
+}
+.stTabs [data-baseweb="tab"] {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--text-mid);
+    text-transform: uppercase;
+    padding: 10px 20px;
+}
+.stTabs [aria-selected="true"] {
+    color: var(--amber) !important;
+    border-bottom: 2px solid var(--amber) !important;
+    background: var(--elevated) !important;
+}
+
+/* Dataframes */
+[data-testid="stDataFrame"] { border: 1px solid var(--border); }
+
+/* Divider */
+hr { border-color: var(--border) !important; }
+
+/* Footer */
+.footer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--text-low);
+    letter-spacing: 0.05em;
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
